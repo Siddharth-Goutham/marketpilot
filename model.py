@@ -140,6 +140,6 @@ class NewsCache(db.Model):
             )
 
             scraped_at = db.Column(
-                db.DateTime,
-                default=datetime.utcnow
+                db.String(20),
+                nullable=False
             )
