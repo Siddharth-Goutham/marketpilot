@@ -38,7 +38,7 @@ class User(db.Model):
     )
 
     token_date = db.Column(
-        db.Date,
+        db.String(10),
         nullable=True
     )
 
@@ -48,7 +48,7 @@ class User(db.Model):
     )
 
     news_timer=db.Column(
-        db.Time,
+        db.String(5),
         nullable=False
     )
 

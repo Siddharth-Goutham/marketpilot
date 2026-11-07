@@ -13,6 +13,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 ticker_list=[]
 ticker_dict={}
 URL="https://gnews.io/api/v4/search"
+API_KEY=os.getenv("GNEWS_API_KEY")
 
 def get_unique_ticker_from_watchlist():
     tickers = db.session.scalars(select(Watchlist.ticker).distinct()).all()
