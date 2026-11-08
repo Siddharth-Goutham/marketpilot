@@ -44,13 +44,9 @@ class User(db.Model):
 
     subscription_tier = db.Column(
         db.String(20),
-        default='nidhi'
-    )
-
-    news_timer=db.Column(
-        db.String(5),
         nullable=False
     )
+
 
     watchlists = db.relationship(
         'Watchlist',

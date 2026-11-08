@@ -1,76 +1,129 @@
 <!doctype html>
 <html lang="en" data-theme="light">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f4ef">
-  <title>MarketPilot — Your market, made clearer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="app.js" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4ef">
+    <title>MarketPilot — Overview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="static\css\styles.css">
+    <script src="static\js\app.js" defer></script>
 </head>
-<body>
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <a class="brand" href="#overview" aria-label="MarketPilot home">
-        <span class="brand-mark">m<span>↗</span></span>
-        <span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span>
-      </a>
-      <div class="workspace-label">YOUR WORKSPACE</div>
-      <nav class="nav-list" aria-label="Main navigation">
-        <button class="nav-link active" data-view="overview"><span class="nav-icon">◫</span>Overview</button>
-        <button class="nav-link" data-view="watchlist"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">4</span></button>
-        <button class="nav-link" data-view="news"><span class="nav-icon">▤</span>Market stories</button>
-        <button class="nav-link" data-view="connection"><span class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></button>
-        <button class="nav-link" data-view="profile"><span class="nav-icon">♙</span>Preferences</button>
-      </nav>
-      <div class="sidebar-bottom">
-        <div class="help-card"><span class="help-icon">✦</span><div><strong>A calmer way to invest</strong><p>Your daily brief is ready when you are.</p><button data-view="news">Read today’s stories <span>↗</span></button></div></div>
-        <button class="user-chip" data-view="profile"><span class="avatar">AK</span><span class="user-info"><strong>Arjun Khanna</strong><small>Personal workspace</small></span><span class="more">···</span></button>
-      </div>
+<body data-page="overview">
+<div class="app-shell">
+    <aside class="sidebar" id="sidebar"><a class="brand" href="index.html"><span
+            class="brand-mark">m<span>↗</span></span><span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span></a>
+        <div class="workspace-label">YOUR WORKSPACE</div>
+        <nav class="nav-list"><a class="nav-link active" href="index.html"><span class="nav-icon">◫</span>Overview</a><a
+                class="nav-link" href="watchlist.html"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">00</span></a><a
+                class="nav-link" href="market-stories.html"><span class="nav-icon">▤</span>Market stories</a><a
+                class="nav-link" href="pricing.html"><span class="nav-icon">₹</span>Pricing</a><a class="nav-link"
+                                                                                                  href="broker-connection.html"><span
+                class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a><a class="nav-link"
+                                                                                                 href="profile.html"><span
+                class="nav-icon">♙</span>Profile</a></nav>
+        <div class="sidebar-bottom">
+            <div class="help-card"><span class="help-icon">✦</span>
+                <div><strong>A calmer way to invest</strong>
+                    <p>Your daily brief is ready when you are.</p><a href="market-stories.html">Read today’s stories
+                        <span>↗</span></a></div>
+            </div>
+            <a class="user-chip" href="profile.html"><span class="avatar">AK</span><span class="user-info"><strong>Arjun Khanna</strong><small>Personal workspace</small></span><span
+                    class="more">···</span></a></div>
     </aside>
-
     <main class="main-area">
-      <header class="topbar">
-        <button class="mobile-menu icon-button" id="menuToggle" aria-label="Open navigation">☰</button>
-        <div class="breadcrumb"><span>Workspace</span><b>/</b><strong id="crumb">Overview</strong></div>
-        <div class="top-actions"><span class="market-status"><i></i><span>Market open</span></span><span class="market-time">NSE · Closes in 02:18:34</span><button class="icon-button theme-button" id="themeToggle" aria-label="Switch color theme" title="Switch color theme"><span id="themeGlyph">☾</span></button><button class="icon-button notification-button" id="notifyButton" aria-label="Notifications">♧<i></i></button></div>
-      </header>
-
-      <div class="page-content">
-        <section class="view active" id="view-overview">
-          <div class="welcome-row"><div><p class="eyebrow"><span id="todayDate"></span> <span class="eyebrow-dot">·</span> BEFORE THE BELL</p><h1>Good morning, Arjun<span class="wave">✳</span></h1><p class="subheading">A little clarity for the decisions ahead.</p></div><button class="button button-soft" id="briefButton"><span>✦</span> Summarize for me</button></div>
-          <div class="market-banner"><div class="market-symbol">N</div><div><strong>NIFTY 50</strong><span>Indian market overview</span></div><div class="market-index"><strong>24,732.15</strong><span class="positive">+186.40 <small>(+0.76%)</small></span></div><div class="sparkline" aria-label="Nifty 50 rising trend"><svg viewBox="0 0 130 42" preserveAspectRatio="none"><path d="M0 32 C12 28 14 33 24 25 S41 31 52 20 S68 26 78 15 S95 19 105 11 S119 13 130 4"/><path class="spark-fill" d="M0 32 C12 28 14 33 24 25 S41 31 52 20 S68 26 78 15 S95 19 105 11 S119 13 130 4 V42 H0Z"/></svg></div><span class="market-note"><i></i> A steady start</span></div>
-          <div class="section-heading"><div><h2>Your portfolio at a glance</h2><p>Small steps add up. Here’s where you stand today.</p></div><button class="text-button" data-view="watchlist">See watchlist <span>→</span></button></div>
-          <div class="metric-grid">
-            <article class="metric-card"><div class="metric-top"><span>Watchlist value</span><span class="metric-icon">↗</span></div><strong class="metric-value" id="watchlistValue">₹0</strong><div class="metric-foot"><span class="positive" id="watchlistChange">₹0 today</span><span>across <b id="dashboardStockCount">0</b> stocks</span></div><div class="mini-bars"><i style="height:29%"></i><i style="height:42%"></i><i style="height:34%"></i><i style="height:54%"></i><i style="height:47%"></i><i style="height:68%"></i><i style="height:59%"></i><i style="height:83%"></i><i style="height:73%"></i><i style="height:96%"></i></div></article>
-            <article class="metric-card"><div class="metric-top"><span>Today’s return</span><span class="metric-icon">◷</span></div><strong class="metric-value positive" id="watchlistReturn">₹0</strong><div class="metric-foot"><span class="positive">0.00%</span><span>watchlist movement</span></div><div class="metric-caption">Your tracked performance will appear here.</div></article>
-            <article class="metric-card"><div class="metric-top"><span>Model outlook</span><span class="metric-icon">✳</span></div><strong class="metric-value"><span id="positiveSetupCount">3</span> <small>positive setups</small></strong><div class="metric-foot"><span class="positive" id="topPrediction">INFY · 78% confidence</span></div><div class="metric-caption">A probability estimate, not a promise.</div></article>
-          </div>
-          <div class="dashboard-grid">
-            <article class="panel watch-panel"><div class="panel-header"><div><h2>On your watchlist</h2><p>The companies you’re keeping an eye on.</p></div><button class="text-button" id="overviewAddButton">＋ Add a company</button></div><div class="stock-list" id="overviewStocks"></div></article>
-            <div class="right-stack"><article class="insight-card"><div class="insight-heading"><span class="insight-spark">✳</span><span id="insightLabel">MODEL OUTLOOK</span></div><h3 id="insightTitle">Your watchlist is ready</h3><p id="insightText">Add a company to see its model outlook and market context here.</p><button id="insightButton" hidden>See today’s summary <span>→</span></button><span class="insight-orb orb-one"></span><span class="insight-orb orb-two"></span></article><article class="connection-card"><div class="connection-icon">↔</div><div class="connection-copy"><strong>Your broker is connected</strong><span>Zerodha Kite · refreshed 7:32 AM</span></div><span class="connected-check">✓</span></article></div>
-          </div>
-          <div class="section-heading recent-heading"><div><h2>Recent activity</h2><p>Just the updates worth your attention.</p></div><button class="text-button" id="activityButton">View activity <span>→</span></button></div>
-          <article class="panel activity-panel" id="activityPanel"><div class="empty-state" id="activityEmpty">Your activity will appear here after you add a stock or set up an alert.</div></article>
-          <p class="disclaimer">Market data shown for demonstration. Investing involves risk; make decisions that fit your goals.</p>
-        </section>
-
-        <section class="view" id="view-watchlist"><div class="page-intro"><p class="eyebrow">YOUR COMPANIES</p><h1>Watchlist <span class="title-count">04</span></h1><p class="subheading">Follow the businesses you believe in, at your own pace.</p></div><div class="watch-toolbar"><div class="search-box"><span>⌕</span><input type="search" id="stockSearch" placeholder="Find a company or symbol" aria-label="Search watchlist"></div><button class="button button-primary" id="addStockButton"><span>＋</span> Add a company</button></div><article class="panel full-watch-panel"><div class="table-heading"><span>COMPANY</span><span>LAST PRICE</span><span>TODAY</span><span>MODEL PRICE</span><span>GTT SETUP</span><span>ACTIONS</span></div><div id="watchRows"></div></article><div class="note-card"><span>✳</span><p><strong>GTT setup:</strong> Use Predict to see the model’s estimated price, then set or adjust your trigger and limit prices manually. Predictions are estimates, not guarantees.</p></div></section>
-
-        <section class="view" id="view-news"><div class="page-intro"><p class="eyebrow">ONE COMPANY AT A TIME</p><h1>Market stories</h1><p class="subheading">Read the latest coverage for each company in your watchlist.</p></div><div class="individual-news-list" id="individualNews"></div><p class="disclaimer">Demo articles and summaries are illustrative. Summaries are scoped to the company you select.</p></section>
-
-        <section class="view" id="view-connection"><div class="page-intro"><p class="eyebrow">YOUR ACCOUNTS</p><h1>Broker connection</h1><p class="subheading">A clear view of what’s connected and what it can do.</p></div><article class="panel broker-hero"><div class="broker-top"><span class="broker-logo">Z</span><div><h2>Zerodha Kite <span class="live-tag"><i></i> Connected</span></h2><p>Your account is connected. GTT alerts are ready for today’s trading session.</p></div><button class="button button-primary" id="refreshToken">↻ Refresh connection</button></div><div class="broker-stats"><div><span>CONNECTION STATUS</span><strong class="positive">● Active</strong></div><div><span>LAST CHECKED</span><strong>Today, 7:32 AM</strong></div><div><span>SESSION ENDS</span><strong>Today, 11:59 PM</strong></div></div></article><article class="panel broker-details"><div class="panel-header"><div><h2>Connection details</h2><p>Your account information stays private.</p></div><span class="lock-label">♙ Protected</span></div><div class="details-grid"><div class="detail-field"><span>Broker account</span><strong>AK•••••81</strong></div><div class="detail-field"><span>API key</span><strong>kite_live_••••••••4f2a</strong></div><div class="detail-field"><span>Order permissions</span><strong>GTT · CNC · Equity</strong></div><div class="detail-field"><span>Market data</span><strong>NSE · BSE</strong></div></div><div class="secure-note">✓ &nbsp;Credentials are encrypted and never included in your email updates.</div></article><button class="text-button disconnect-button" id="connectionInfo">How does this work? <span>→</span></button></section>
-
-        <section class="view" id="view-profile"><div class="page-intro"><p class="eyebrow">MAKE IT YOURS</p><h1>Your preferences</h1><p class="subheading">A few details help MarketPilot feel more like yours.</p></div><article class="panel profile-panel"><div class="profile-identity"><span class="avatar avatar-large">AK</span><div><h2>Arjun Khanna</h2><p>Personal workspace · Member since January 2024</p></div><span class="profile-badge">✳ &nbsp;Your account</span></div><div class="form-grid"><label class="field-label">Display name<input id="profileName" value="Arjun Khanna"></label><label class="field-label">Phone number<input value="+91 98•• •••247"></label><label class="field-label">Email for your daily brief<input id="profileEmail" value="arjun@marketpilot.in" type="email"></label><label class="field-label">Preferred delivery time<select><option>8:00 AM · India Standard Time</option><option>7:30 AM · India Standard Time</option><option>9:00 AM · India Standard Time</option></select></label></div><div class="preferences-heading"><div><h3>Your daily rhythm</h3><p>Choose what you’d like to hear from us.</p></div></div><label class="preference-row"><span><strong>Morning market brief</strong><small>A thoughtful summary of stories and movements in your watchlist.</small></span><input class="switch" type="checkbox" checked><i></i></label><label class="preference-row"><span><strong>Order updates</strong><small>A note when a GTT order is placed or triggered.</small></span><input class="switch" type="checkbox" checked><i></i></label><div class="save-row"><span class="save-feedback" id="saveFeedback"></span><button class="button button-primary" id="saveProfile">Save preferences</button></div></article></section>
-      </div>
+        <header class="topbar">
+            <button class="mobile-menu icon-button" id="menuToggle" aria-label="Open navigation">☰</button>
+            <div class="breadcrumb"><span>Workspace</span><b>/</b><strong>Overview</strong></div>
+            <div class="top-actions"><span class="market-status"><i></i><span>Market open</span></span><span
+                    class="market-time">NSE · Demo market</span>
+                <button class="icon-button theme-button" id="themeToggle" aria-label="Switch color theme"><span
+                        id="themeGlyph">☾</span></button>
+                <a class="text-button top-login" href="auth.html">Sign in</a></div>
+        </header>
+        <div class="page-content">
+            <section class="view active">
+                <div class="welcome-row">
+                    <div><p class="eyebrow"><span id="todayDate"></span> <span class="eyebrow-dot">·</span> YOUR MARKET,
+                        IN PERSPECTIVE</p>
+                        <h1>Good morning, Arjun<span class="wave">✳</span></h1>
+                        <p class="subheading">A little clarity for the decisions ahead.</p></div>
+                    <a class="button button-soft" href="market-stories.html">✦ &nbsp;Read market stories</a></div>
+                <div class="market-banner">
+                    <div class="market-symbol">N</div>
+                    <div><strong>NIFTY 50</strong><span>Demo market overview</span></div>
+                    <div class="market-index"><strong>Market data unavailable</strong><span class="market-note"><i></i> Connect a data source</span>
+                    </div>
+                </div>
+                <div class="section-heading">
+                    <div><h2>Your portfolio at a glance</h2>
+                        <p>Track the companies you choose to follow.</p></div>
+                    <a class="text-button" href="watchlist.html">Manage watchlist <span>→</span></a></div>
+                <div class="metric-grid">
+                    <article class="metric-card">
+                        <div class="metric-top"><span>Watchlist value</span><span class="metric-icon">↗</span></div>
+                        <strong class="metric-value" id="watchlistValue">₹0.00</strong>
+                        <div class="metric-foot"><span class="positive" id="watchlistChange">₹0 today</span><span>across <b
+                                id="dashboardStockCount">0</b> stocks</span></div>
+                    </article>
+                    <article class="metric-card">
+                        <div class="metric-top"><span>Today’s return</span><span class="metric-icon">◷</span></div>
+                        <strong class="metric-value positive" id="watchlistReturn">₹0.00</strong>
+                        <div class="metric-foot"><span class="positive">0.00%</span><span>watchlist movement</span>
+                        </div>
+                        <div class="metric-caption">Your tracked performance will appear here.</div>
+                    </article>
+                    <article class="metric-card">
+                        <div class="metric-top"><span>Model outlook</span><span class="metric-icon">✳</span></div>
+                        <strong class="metric-value"><span id="positiveSetupCount">0</span> <small>positive
+                            setups</small></strong>
+                        <div class="metric-foot"><span class="positive" id="topPrediction">Add a stock to see predictions</span>
+                        </div>
+                        <div class="metric-caption">A probability estimate, not a promise.</div>
+                    </article>
+                </div>
+                <div class="dashboard-grid">
+                    <article class="panel watch-panel">
+                        <div class="panel-header">
+                            <div><h2>On your watchlist</h2>
+                                <p>The companies you’re keeping an eye on.</p></div>
+                            <a class="text-button" href="watchlist.html">View watchlist <span>→</span></a></div>
+                        <div class="stock-list" id="overviewStocks"></div>
+                    </article>
+                    <div class="right-stack">
+                        <article class="insight-card">
+                            <div class="insight-heading"><span class="insight-spark">✳</span><span id="insightLabel">MODEL OUTLOOK</span>
+                            </div>
+                            <h3 id="insightTitle">Your watchlist is ready</h3>
+                            <p id="insightText">Add a company to see its model outlook and market context here.</p><a
+                                id="insightButton" class="text-button" href="market-stories.html" hidden>See today’s
+                            stories <span>→</span></a><span class="insight-orb orb-one"></span><span
+                                class="insight-orb orb-two"></span></article>
+                        <article class="connection-card">
+                            <div class="connection-icon">↔</div>
+                            <div class="connection-copy"><strong>Your broker connection</strong><span>Review connection details</span>
+                            </div>
+                            <a class="connected-check" href="broker-connection.html">→</a></article>
+                    </div>
+                </div>
+                <div class="section-heading recent-heading">
+                    <div><h2>Recent activity</h2>
+                        <p>Updates from your workspace.</p></div>
+                </div>
+                <article class="panel activity-panel" id="activityPanel">
+                    <div class="empty-state" id="activityEmpty">Your activity will appear here after you add a stock or
+                        set up an alert.
+                    </div>
+                </article>
+                <p class="disclaimer">Demo interface. Market data and model estimates are not live financial advice.</p>
+            </section>
+        </div>
     </main>
-  </div>
-  <div class="toast" id="toast" role="status" aria-live="polite"><span>✳</span><div><strong id="toastTitle">You’re all caught up</strong><small id="toastText">Your workspace is looking good.</small></div><button id="toastClose" aria-label="Dismiss">×</button></div>
-  <dialog class="modal" id="addModal"><form method="dialog" id="addForm"><button class="modal-close" aria-label="Close">×</button><span class="modal-icon">＋</span><p class="eyebrow">GROW YOUR WATCHLIST</p><h2>Add a company</h2><p>Which business would you like to keep an eye on?</p><label class="field-label">Company or NSE symbol<input id="newSymbol" placeholder="e.g. WIPRO" autocomplete="off" required></label><div class="modal-actions"><button class="button button-soft" value="cancel">Maybe later</button><button class="button button-primary" id="confirmAdd" value="default">Add to watchlist</button></div></form></dialog>
-  <dialog class="modal" id="gttModal"><form id="gttForm"><button type="button" class="modal-close" data-close="gttModal" aria-label="Close">×</button><span class="modal-icon">↗</span><p class="eyebrow">PERSONALIZE YOUR ALERT</p><h2>Set up a GTT order</h2><p id="gttCompanyCopy">Choose your order details before enabling this alert.</p><p class="model-suggestion" id="gttSuggested"></p><div class="form-grid gtt-fields"><label class="field-label">Order type<select id="gttSide"><option value="BUY">Buy below</option><option value="SELL">Sell above</option></select></label><label class="field-label">Quantity<input id="gttQuantity" type="number" min="1" step="1" value="10" required></label><label class="field-label">Trigger price (₹)<input id="gttTrigger" type="number" min="0.05" step="0.05" placeholder="e.g. 1830" required></label><label class="field-label">Limit price (₹)<input id="gttLimit" type="number" min="0.05" step="0.05" placeholder="e.g. 1828" required></label></div><p class="modal-hint">Your alert will be saved in this demo. No broker order will be submitted.</p><div class="modal-actions"><button type="button" class="button button-soft" data-close="gttModal">Cancel</button><button class="button button-primary" type="submit">Save GTT setup</button></div></form></dialog>
-  <dialog class="modal summary-modal" id="summaryModal"><button type="button" class="modal-close" data-close="summaryModal" aria-label="Close">×</button><span class="modal-icon">✦</span><p class="eyebrow">STOCK STORY SUMMARY</p><h2 id="summaryTitle">Today’s summary</h2><p class="summary-disclosure">LLM-style summary of this company’s sample article data · Demo content</p><div class="summary-content" id="summaryContent"></div><p class="modal-hint">Summary is limited to this stock. Model predictions are estimates, not guarantees or financial advice.</p></dialog>
+</div>
+<div class="toast" id="toast" role="status"><span>✳</span>
+    <div><strong id="toastTitle"></strong><small id="toastText"></small></div>
+    <button id="toastClose" aria-label="Dismiss">×</button>
+</div>
 </body>
 </html>
