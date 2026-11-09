@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#f5f4ef">
+    <title>MarketPilot — Sign in or Create account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="/static/js/app.js" defer></script>
+</head>
+<body data-page="auth">
+<main class="auth-layout">
+    <a class="brand auth-brand" href="index.html">
+        <span class="brand-mark">m<span>↗</span></span>
+        <span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span>
+    </a>
+    <button class="icon-button theme-button auth-theme" id="themeToggle" aria-label="Switch color theme">
+        <span id="themeGlyph">☾</span>
+    </button>
+    <section class="auth-card panel">
+        <p class="eyebrow">WELCOME TO A CALMER MARKET</p>
+        <h1 id="authTitle">Welcome back</h1>
+        <p class="subheading" id="authSubtitle">Sign in to your MarketPilot workspace.</p>
+        <div class="auth-tabs">
+            <button type="button" class="selected" data-auth-mode="login">Sign in</button>
+            <button type="button" data-auth-mode="signup">Create account</button>
+        </div>
+
+
+        <form id="loginForm" class="auth-form" method="POST" action="/auth">
+            <label class="field-label">Email address
+                <input type="email" id="loginEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+            </label>
+            <label class="field-label">Password
+                <input type="password" id="loginPassword" name="password" placeholder="Your password" autocomplete="current-password" required>
+            </label>
+            <button class="button button-primary auth-submit" type="submit" name="action" value="login">Sign in</button>
+        </form>
+
+
+        <form id="signupForm" class="auth-form" method="POST" action="/auth" hidden>
+            <label class="field-label">Your name
+                <input type="text" id="signupName" name="username" placeholder="Full name" autocomplete="name" required>
+            </label>
+            <label class="field-label">Email address
+                <input type="email" id="signupEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+            </label>
+            <label class="field-label">Create a password
+                <input type="password" id="signupPassword" name="password" placeholder="At least 8 characters" minlength="8" autocomplete="new-password" required>
+            </label>
+            <button class="button button-primary auth-submit" type="submit" name="action" value="signup">Create account</button>
+        </form>
+    </section>
+    <div class="auth-toast" id="authFeedback" role="status"></div>
+</main>
+</body>
+</html>

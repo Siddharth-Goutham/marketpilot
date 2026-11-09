@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#f5f4ef">
+    <title>MarketPilot — Broker Connection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="static\css\styles.css">
+    <script src="static\js\app.js" defer></script>
+</head>
+<body data-page="connection">
+<div class="app-shell">
+    <aside class="sidebar" id="sidebar"><a class="brand" href="index.html"><span
+            class="brand-mark">m<span>↗</span></span><span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span></a>
+        <div class="workspace-label">YOUR WORKSPACE</div>
+        <nav class="nav-list"><a class="nav-link" href="{{url_for('dashboard')}}"><span class="nav-icon">◫</span>Overview</a><a
+                class="nav-link" href="{{url_for('watchlist')}}"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">00</span></a><a
+                class="nav-link" href="{{url_for('market_stories')}}"><span class="nav-icon">▤</span>Market stories</a><a
+                class="nav-link" href="{{url_for('pricing')}}"><span class="nav-icon">₹</span>Pricing</a><a
+                class="nav-link active" href="{{url_for('broker_connection')}}"><span class="nav-icon">⌘</span>Broker
+            connection<span class="online-dot"></span></a><a class="nav-link" href="{{url_for('profile')}}"><span
+                class="nav-icon">♙</span>Profile</a></nav>
+        <div class="sidebar-bottom">
+            <div class="help-card"><span class="help-icon">✦</span>
+                <div><strong>Need a hand?</strong>
+                    <p>Review your connection details below.</p></div>
+            </div>
+            <a class="user-chip" href="{{url_for('profile')}}"><span class="avatar">AK</span><span class="user-info"><strong>Arjun Khanna</strong><small>Personal workspace</small></span><span
+                    class="more">···</span></a></div>
+    </aside>
+    <main class="main-area">
+        <header class="topbar">
+            <button class="mobile-menu icon-button" id="menuToggle">☰</button>
+            <div class="breadcrumb"><span>Workspace</span><b>/</b><strong>Broker connection</strong></div>
+            <div class="top-actions"><span class="market-status"><i></i><span>Market open</span></span>
+                <button class="icon-button theme-button" id="themeToggle"><span id="themeGlyph">☾</span></button>
+{% if 'user_id' in session %}
+<a class="text-button top-login" href="{{ url_for('logout') }}">Sign out</a>
+{% else %}
+<a class="text-button top-login" href="{{ url_for('auth') }}">Sign in</a>
+{% endif %}        </header>
+        <div class="page-content">
+            <section class="view active">
+                <div class="page-intro"><p class="eyebrow">YOUR ACCOUNTS</p>
+                    <h1>Broker connection</h1>
+                    <p class="subheading">Manage your broker authentication and session health.</p></div>
+                <article class="panel broker-hero">
+                    <div class="broker-top"><span class="broker-logo">Z</span>
+                        <div><h2>Zerodha Kite <span class="live-tag"><i></i> Demo</span></h2>
+                            <p>This frontend demo is not connected to Zerodha. Add a broker integration to enable live
+                                account access and orders.</p></div>
+                        <button class="button button-primary" id="refreshToken">↻ Refresh demo status</button>
+                    </div>
+                    <div class="broker-stats">
+                        <div><span>CONNECTION STATUS</span><strong class="positive">● Demo only</strong></div>
+                        <div><span>LAST CHECKED</span><strong>Not connected</strong></div>
+                        <div><span>SESSION ENDS</span><strong>Not available</strong></div>
+                    </div>
+                </article>
+                <article class="panel broker-details">
+                    <div class="panel-header">
+                        <div><h2>Connection details</h2>
+                            <p>Sample values only. No credentials are stored.</p></div>
+                        <span class="lock-label">♙ Demo</span></div>
+                    <div class="details-grid">
+                        <div class="detail-field"><span>Broker account</span><strong>Not connected</strong></div>
+                        <div class="detail-field"><span>API key</span><strong>Not configured</strong></div>
+                        <div class="detail-field"><span>Order permissions</span><strong>Not available</strong></div>
+                        <div class="detail-field"><span>Market data</span><strong>Not connected</strong></div>
+                    </div>
+                    <div class="secure-note">Demo orders and alerts are not sent to a broker.</div>
+                </article>
+            </section>
+        </div>
+    </main>
+</div>
+<div class="toast" id="toast" role="status"><span>✳</span>
+    <div><strong id="toastTitle"></strong><small id="toastText"></small></div>
+    <button id="toastClose">×</button>
+</div>
+</body>
+</html>

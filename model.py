@@ -77,7 +77,6 @@ class Watchlist(db.Model):
 
     ticker=db.Column(
                 db.String(20),
-                nullable=False
     )
 
     auto_execute = db.Column(

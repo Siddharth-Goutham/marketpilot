@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#f5f4ef">
+    <title>MarketPilot — Market Stories</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="static\css\styles.css">
+    <script src="static\js\app.js" defer></script>
+</head>
+<body data-page="news">
+<div class="app-shell">
+    <aside class="sidebar" id="sidebar"><a class="brand" href="index.html"><span
+            class="brand-mark">m<span>↗</span></span><span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span></a>
+        <div class="workspace-label">YOUR WORKSPACE</div>
+        <nav class="nav-list"><a class="nav-link" href="{{url_for('dashboard')}}"><span class="nav-icon">◫</span>Overview</a><a
+                class="nav-link" href="{{url_for('watchlist')}}"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">00</span></a><a
+                class="nav-link active" href="{{url_for('market_stories')}}"><span class="nav-icon">▤</span>Market stories</a><a
+                class="nav-link" href="{{url_for('pricing')}}"><span class="nav-icon">₹</span>Pricing</a><a class="nav-link"
+                                                                                                  href="{{url_for('broker_connection')}}"><span
+                class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a><a class="nav-link"
+                                                                                                 href="{{url_for('profile')}}"><span
+                class="nav-icon">♙</span>Profile</a></nav>
+        <div class="sidebar-bottom">
+            <div class="help-card"><span class="help-icon">✦</span>
+                <div><strong>One company at a time</strong>
+                    <p>Stories are grouped by the stock you follow.</p><a href="watchlist.html">Manage watchlist ↗</a>
+                </div>
+            </div>
+            <a class="user-chip" href="{{url_for('profile')}}"><span class="avatar">AK</span><span class="user-info"><strong>Arjun Khanna</strong><small>Personal workspace</small></span><span
+                    class="more">···</span></a></div>
+    </aside>
+    <main class="main-area">
+        <header class="topbar">
+            <button class="mobile-menu icon-button" id="menuToggle" aria-label="Open navigation">☰</button>
+            <div class="breadcrumb"><span>Workspace</span><b>/</b><strong>Market stories</strong></div>
+            <div class="top-actions"><span class="market-status"><i></i><span>Market open</span></span>
+                <button class="icon-button theme-button" id="themeToggle" aria-label="Switch color theme"><span
+                        id="themeGlyph">☾</span></button>
+                {% if 'user_id' in session %}
+<a class="text-button top-login" href="{{ url_for('logout') }}">Sign out</a>
+{% else %}
+<a class="text-button top-login" href="{{ url_for('auth') }}">Sign in</a>
+{% endif %}
+        </header>
+        <div class="page-content">
+            <section class="view active">
+                <div class="page-intro"><p class="eyebrow">ONE COMPANY AT A TIME</p>
+                    <h1>Market stories</h1>
+                    <p class="subheading">News and sentiment, kept separate for every company you follow.</p></div>
+                <div class="individual-news-list" id="individualNews"></div>
+                <p class="disclaimer">Demo articles and summaries are illustrative. Summaries are scoped to the company
+                    you select.</p></section>
+        </div>
+    </main>
+</div>
+<div class="toast" id="toast" role="status"><span>✳</span>
+    <div><strong id="toastTitle"></strong><small id="toastText"></small></div>
+    <button id="toastClose" aria-label="Dismiss">×</button>
+</div>
+<dialog class="modal summary-modal" id="summaryModal">
+    <button type="button" class="modal-close" data-close="summaryModal">×</button>
+    <span class="modal-icon">✦</span>
+    <p class="eyebrow">STOCK STORY SUMMARY</p>
+    <h2 id="summaryTitle">Today’s summary</h2>
+    <p class="summary-disclosure">Demo summary of this company’s news.</p>
+    <div class="summary-content" id="summaryContent"></div>
+    <p class="modal-hint">Summary is limited to this stock. Predictions are estimates, not guarantees.</p></dialog>
+</body>
+</html>

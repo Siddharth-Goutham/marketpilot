@@ -16,7 +16,7 @@ with app.app_context():
 
 @app.route("/")
 def landing_page():
-    return render_template('index.html')
+    return render_template('auth.html')
 
 @app.route("/auth", methods=["GET", "POST"])
 def auth():
@@ -57,7 +57,7 @@ def auth():
             db.session.commit()
 
             session["user_id"] = new_user.id
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("dashboard",session=session['user_id']))
 
     return render_template("auth.html")
 
@@ -65,25 +65,75 @@ def auth():
 @app.route('/logout')
 def logout():
     session.pop("user_id", None)
-    return redirect(url_for("login"))
+    return redirect(url_for("auth"))
 
 
 @app.route("/dashboard")
 def dashboard():
-    return render_template('index.html')
+    if 'user_id' not in session:
+        return redirect(url_for("auth"))
+
+    user = User.query.filter_by(id=session['user_id']).first()
+    display_name = user.username.split()[0] if user else "Trader"
+
+    now_hour=float(datetime.now().hour)
+    if now_hour<12:
+        parts_of_day="morning"
+    elif 12 <= now_hour < 17:
+        parts_of_day = "afternoon"
+    else:
+        parts_of_day = "evening"
+
+    tickers_list=Watchlist.query.filter_by(user_id=session['user_id']).all()
+
+    return render_template('index.html',user=display_name,parts_of_day=parts_of_day,tickers_list=tickers_list)
 
 
-@app.route("/watchlist")
+@app.route("/watchlist",methods=['POST','GET'])
 def watchlist():
-    return render_template('watchlist.html')
+    if 'user_id' not in session:
+        return redirect(url_for('auth'))
+
+    if request.method == 'POST':
+        company=request.form.get('company_name')
+        if company:
+            new_ticker=Watchlist(
+            user_id=session['user_id'],
+            ticker=company,
+            auto_execute=0
+            )
+            db.session.add(new_ticker)
+            db.session.commit()
+            return redirect(url_for('watchlist'))
+
+    tickers_list=Watchlist.query.filter_by(user_id=session['user_id']).all()
+    return render_template('watchlist.html',tickers_list=tickers_list)
+
+@app.route('/watchlist/delete/<ticker>',methods=['POST'])
+def delete_stock(ticker):
+    if 'user_id' not in session:
+        return redirect(url_for('auth'))
+
+    Watchlist.query.filter_by(user_id=session['user_id'], ticker=ticker).delete()
+    db.session.commit()
+    return redirect(url_for('watchlist'))
 
 
 @app.route("/market_stories")
 def market_stories():
-
     return render_template('market-stories.html')
 
+@app.route("/pricing")
+def pricing():
+    return render_template('pricing.html')
 
+@app.route('/broker_connection')
+def broker_connection():
+    return render_template('broker-connection.html')
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
 
 
 if __name__=="__main__":

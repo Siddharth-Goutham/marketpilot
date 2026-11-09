@@ -12,110 +12,132 @@
 </head>
 <body data-page="overview">
 <div class="app-shell">
-    <aside class="sidebar" id="sidebar"><a class="brand" href="index.html"><span
-            class="brand-mark">m<span>↗</span></span><span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span></a>
+    <aside class="sidebar" id="sidebar">
+        <a class="brand" href="{{ url_for('dashboard') }}">
+            <span class="brand-mark">m<span>↗</span></span>
+            <!-- Restored to a single line to match the Watchlist sidebar perfectly -->
+            <span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span>
+        </a>
         <div class="workspace-label">YOUR WORKSPACE</div>
-        <nav class="nav-list"><a class="nav-link active" href="index.html"><span class="nav-icon">◫</span>Overview</a><a
-                class="nav-link" href="watchlist.html"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">00</span></a><a
-                class="nav-link" href="market-stories.html"><span class="nav-icon">▤</span>Market stories</a><a
-                class="nav-link" href="pricing.html"><span class="nav-icon">₹</span>Pricing</a><a class="nav-link"
-                                                                                                  href="broker-connection.html"><span
-                class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a><a class="nav-link"
-                                                                                                 href="profile.html"><span
-                class="nav-icon">♙</span>Profile</a></nav>
+        <nav class="nav-list">
+            <a class="nav-link active" href="{{ url_for('dashboard') }}"><span class="nav-icon">◫</span>Overview</a>
+            <a class="nav-link" href="{{ url_for('watchlist') }}"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">{{ '%02d' % tickers_list|length }}</span></a>
+            <a class="nav-link" href="{{ url_for('market_stories') }}"><span class="nav-icon">▤</span>Market stories</a>
+            <a class="nav-link" href="{{ url_for('pricing') }}"><span class="nav-icon">₹</span>Pricing</a>
+            <a class="nav-link" href="{{ url_for('broker_connection') }}"><span class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a>
+            <a class="nav-link" href="{{ url_for('profile') }}"><span class="nav-icon">♙</span>Profile</a>
+        </nav>
         <div class="sidebar-bottom">
             <div class="help-card"><span class="help-icon">✦</span>
                 <div><strong>A calmer way to invest</strong>
-                    <p>Your daily brief is ready when you are.</p><a href="market-stories.html">Read today’s stories
-                        <span>↗</span></a></div>
+                    <p>Your daily brief is ready when you are.</p><a href="{{ url_for('market_stories') }}">Read today’s stories <span>↗</span></a>
+                </div>
             </div>
-            <a class="user-chip" href="profile.html"><span class="avatar">AK</span><span class="user-info"><strong>Arjun Khanna</strong><small>Personal workspace</small></span><span
-                    class="more">···</span></a></div>
+            <a class="user-chip" href="{{ url_for('profile') }}">
+                <span class="avatar">AK</span>
+                <span class="user-info"><strong>Arjun Khanna</strong><small>Personal workspace</small></span>
+                <span class="more">···</span>
+            </a>
+        </div>
     </aside>
     <main class="main-area">
         <header class="topbar">
             <button class="mobile-menu icon-button" id="menuToggle" aria-label="Open navigation">☰</button>
-            <div class="breadcrumb"><span>Workspace</span><b>/</b><strong>Overview</strong></div>
-            <div class="top-actions"><span class="market-status"><i></i><span>Market open</span></span><span
-                    class="market-time">NSE · Demo market</span>
-                <button class="icon-button theme-button" id="themeToggle" aria-label="Switch color theme"><span
-                        id="themeGlyph">☾</span></button>
-                <a class="text-button top-login" href="auth.html">Sign in</a></div>
+            <!-- Simplified to flat text to prevent flex-gap jumping between pages -->
+            <div class="breadcrumb">Workspace / <strong>Overview</strong></div>
+            <div class="top-actions">
+                <span class="market-status"><i></i><span>Market open</span></span>
+                <button class="icon-button theme-button" id="themeToggle" aria-label="Switch color theme"><span id="themeGlyph">☾</span></button>
+                {% if 'user_id' in session %}
+                <a class="text-button top-login" href="{{ url_for('logout') }}">Sign out</a>
+                {% else %}
+                <a class="text-button top-login" href="{{ url_for('auth') }}">Sign in</a>
+                {% endif %}
+            </div>
         </header>
         <div class="page-content">
             <section class="view active">
-                <div class="welcome-row">
-                    <div><p class="eyebrow"><span id="todayDate"></span> <span class="eyebrow-dot">·</span> YOUR MARKET,
-                        IN PERSPECTIVE</p>
-                        <h1>Good morning, Arjun<span class="wave">✳</span></h1>
-                        <p class="subheading">A little clarity for the decisions ahead.</p></div>
-                    <a class="button button-soft" href="market-stories.html">✦ &nbsp;Read market stories</a></div>
+                <div class="welcome-row" style="margin-top: 2px; margin-bottom: 26px;">
+                    <div>
+                        <p class="eyebrow"><span id="todayDate"></span> <span class="eyebrow-dot">·</span> YOUR MARKET, IN PERSPECTIVE</p>
+                        <h1>Good {{ parts_of_day }}, {{ user }}<span class="wave">✳</span></h1>
+                        <p class="subheading">A little clarity for the decisions ahead.</p>
+                    </div>
+                    <a class="button button-soft" href="{{ url_for('market_stories') }}">✦ &nbsp;Read market stories</a>
+                </div>
+
                 <div class="market-banner">
                     <div class="market-symbol">N</div>
                     <div><strong>NIFTY 50</strong><span>Demo market overview</span></div>
-                    <div class="market-index"><strong>Market data unavailable</strong><span class="market-note"><i></i> Connect a data source</span>
-                    </div>
+                    <div class="market-index"><strong>Market data unavailable</strong><span class="market-note"><i></i> Connect a data source</span></div>
                 </div>
+
                 <div class="section-heading">
-                    <div><h2>Your portfolio at a glance</h2>
-                        <p>Track the companies you choose to follow.</p></div>
-                    <a class="text-button" href="watchlist.html">Manage watchlist <span>→</span></a></div>
+                    <div>
+                        <h2>Your portfolio at a glance</h2>
+                        <p>Track the companies you choose to follow.</p>
+                    </div>
+                    <a class="text-button" href="{{ url_for('watchlist') }}">Manage watchlist <span>→</span></a>
+                </div>
+
                 <div class="metric-grid">
                     <article class="metric-card">
                         <div class="metric-top"><span>Watchlist value</span><span class="metric-icon">↗</span></div>
                         <strong class="metric-value" id="watchlistValue">₹0.00</strong>
-                        <div class="metric-foot"><span class="positive" id="watchlistChange">₹0 today</span><span>across <b
-                                id="dashboardStockCount">0</b> stocks</span></div>
+                        <div class="metric-foot"><span class="positive" id="watchlistChange">₹0 today</span><span>across <b id="dashboardStockCount">0</b> stocks</span></div>
                     </article>
                     <article class="metric-card">
                         <div class="metric-top"><span>Today’s return</span><span class="metric-icon">◷</span></div>
                         <strong class="metric-value positive" id="watchlistReturn">₹0.00</strong>
-                        <div class="metric-foot"><span class="positive">0.00%</span><span>watchlist movement</span>
-                        </div>
+                        <div class="metric-foot"><span class="positive">0.00%</span><span>watchlist movement</span></div>
                         <div class="metric-caption">Your tracked performance will appear here.</div>
                     </article>
                     <article class="metric-card">
                         <div class="metric-top"><span>Model outlook</span><span class="metric-icon">✳</span></div>
-                        <strong class="metric-value"><span id="positiveSetupCount">0</span> <small>positive
-                            setups</small></strong>
-                        <div class="metric-foot"><span class="positive" id="topPrediction">Add a stock to see predictions</span>
-                        </div>
+                        <strong class="metric-value"><span id="positiveSetupCount">0</span> <small>positive setups</small></strong>
+                        <div class="metric-foot"><span class="positive" id="topPrediction">Add a stock to see predictions</span></div>
                         <div class="metric-caption">A probability estimate, not a promise.</div>
                     </article>
                 </div>
+
                 <div class="dashboard-grid">
                     <article class="panel watch-panel">
                         <div class="panel-header">
-                            <div><h2>On your watchlist</h2>
-                                <p>The companies you’re keeping an eye on.</p></div>
-                            <a class="text-button" href="watchlist.html">View watchlist <span>→</span></a></div>
+                            <div>
+                                <h2>On your watchlist</h2>
+                                <p>The companies you’re keeping an eye on.</p>
+                            </div>
+                            <a class="text-button" href="{{ url_for('watchlist') }}">View watchlist <span>→</span></a>
+                        </div>
                         <div class="stock-list" id="overviewStocks"></div>
                     </article>
                     <div class="right-stack">
                         <article class="insight-card">
-                            <div class="insight-heading"><span class="insight-spark">✳</span><span id="insightLabel">MODEL OUTLOOK</span>
-                            </div>
+                            <div class="insight-heading"><span class="insight-spark">✳</span><span id="insightLabel">MODEL OUTLOOK</span></div>
                             <h3 id="insightTitle">Your watchlist is ready</h3>
-                            <p id="insightText">Add a company to see its model outlook and market context here.</p><a
-                                id="insightButton" class="text-button" href="market-stories.html" hidden>See today’s
-                            stories <span>→</span></a><span class="insight-orb orb-one"></span><span
-                                class="insight-orb orb-two"></span></article>
+                            <p id="insightText">Add a company to see its model outlook and market context here.</p>
+                            <a id="insightButton" class="text-button" href="{{ url_for('market_stories') }}" hidden>See today’s stories <span>→</span></a>
+                            <span class="insight-orb orb-one"></span><span class="insight-orb orb-two"></span>
+                        </article>
                         <article class="connection-card">
                             <div class="connection-icon">↔</div>
-                            <div class="connection-copy"><strong>Your broker connection</strong><span>Review connection details</span>
-                            </div>
-                            <a class="connected-check" href="broker-connection.html">→</a></article>
+                            <div class="connection-copy"><strong>Your broker connection</strong><span>Review connection details</span></div>
+                            <a class="connected-check" href="{{ url_for('broker_connection') }}">→</a>
+                        </article>
                     </div>
                 </div>
+
                 <div class="section-heading recent-heading">
-                    <div><h2>Recent activity</h2>
-                        <p>Updates from your workspace.</p></div>
-                </div>
-                <article class="panel activity-panel" id="activityPanel">
-                    <div class="empty-state" id="activityEmpty">Your activity will appear here after you add a stock or
-                        set up an alert.
+                    <div>
+                        <h2>Recent activity</h2>
+                        <p>Updates from your workspace.</p>
                     </div>
+                </div>
+
+                <article class="panel activity-panel" id="activityPanel">
+                    <div class="empty-state" id="activityEmpty">Your activity will appear here after you add a stock or set up an alert.</div>
                 </article>
+
                 <p class="disclaimer">Demo interface. Market data and model estimates are not live financial advice.</p>
             </section>
         </div>

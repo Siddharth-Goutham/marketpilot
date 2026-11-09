@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#f5f4ef">
+    <title>MarketPilot — Watchlist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+<body data-page="watchlist">
+<div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+        <a class="brand" href="{{ url_for('dashboard') }}">
+            <span class="brand-mark">m<span>↗</span></span>
+            <span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span>
+        </a>
+        <div class="workspace-label">YOUR WORKSPACE</div>
+        <nav class="nav-list">
+            <a class="nav-link" href="{{ url_for('dashboard') }}"><span class="nav-icon">◫</span>Overview</a>
+            <a class="nav-link active" href="{{ url_for('watchlist') }}">
+                <span class="nav-icon">⌁</span>Watchlist
+                <span class="nav-count">{{ '%02d' % tickers_list|length }}</span>
+            </a>
+            <a class="nav-link" href="{{ url_for('market_stories') }}"><span class="nav-icon">▤</span>Market stories</a>
+            <a class="nav-link" href="{{ url_for('pricing') }}"><span class="nav-icon">₹</span>Pricing</a>
+            <a class="nav-link" href="{{ url_for('broker_connection') }}"><span class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a>
+            <a class="nav-link" href="{{ url_for('profile') }}"><span class="nav-icon">♙</span>Profile</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="help-card">
+                <span class="help-icon">✦</span>
+                <div>
+                    <strong>A calmer way to invest</strong>
+                    <p>Your daily brief is ready when you are.</p>
+                    <a href="{{ url_for('market_stories') }}">Read today’s stories ↗</a>
+                </div>
+            </div>
+            <a class="user-chip" href="{{ url_for('profile') }}">
+                <span class="avatar">AK</span>
+                <span class="user-info"><strong>Arjun Khanna</strong><small>Personal workspace</small></span>
+                <span class="more">···</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-area">
+        <header class="topbar">
+            <button class="mobile-menu icon-button" id="menuToggle" aria-label="Open navigation">☰</button>
+            <div class="breadcrumb"><span>Workspace</span><b>/</b><strong>Watchlist</strong></div>
+            <div class="top-actions">
+                <span class="market-status"><i></i><span>Market open</span></span>
+                <button class="icon-button theme-button" id="themeToggle" aria-label="Switch color theme"><span id="themeGlyph">☾</span></button>
+{% if 'user_id' in session %}
+<a class="text-button top-login" href="{{ url_for('logout') }}">Sign out</a>
+{% else %}
+<a class="text-button top-login" href="{{ url_for('auth') }}">Sign in</a>
+{% endif %}            </div>
+        </header>
+
+        <div class="page-content">
+            <section class="view active">
+                <div class="page-intro">
+                    <p class="eyebrow">YOUR COMPANIES</p>
+                    <h1>Watchlist <span class="title-count">{{ '%02d' % tickers_list|length }}</span></h1>
+                    <p class="subheading">Follow the businesses you believe in, at your own pace.</p>
+                </div>
+
+                <div class="watch-toolbar">
+                    <div class="search-box">
+                        <span>⌕</span>
+                        <input type="search" id="stockSearch" placeholder="Find a company or symbol" aria-label="Search watchlist">
+                    </div>
+                    <button class="button button-primary" id="addStockButton">＋ Add a company</button>
+                </div>
+
+                <article class="panel full-watch-panel">
+                    <div class="table-heading">
+                        <span>COMPANY</span>
+                        <span>LAST PRICE</span>
+                        <span>TODAY</span>
+                        <span>MODEL PRICE</span>
+                        <span>GTT SETUP</span>
+                        <span>ACTIONS</span>
+                    </div>
+
+                    <div id="watchRows">
+    {% for tickers in tickers_list %}
+    <div class="full-stock-row" data-symbol="{{ tickers.ticker }}">
+        <div class="stock-name">
+            <span class="stock-monogram">{{ tickers.ticker[:2] if tickers.ticker else 'NA' }}</span>
+            <span>
+                <strong>{{ tickers.ticker }}</strong>
+                <small>{{ tickers.symbol }}</small>
+            </span>
+        </div>
+        <div class="stock-quote">
+            <strong>₹1,847.20</strong>
+            <small class="positive">+1.84%</small>
+        </div>
+        <div class="stock-quote">
+            <strong class="positive">+1.84%</strong>
+            <small>today</small>
+        </div>
+        <div class="prediction-cell">
+            <button class="predict-button" data-predict="{{ tickers.ticker }}">Predict</button>
+            <div class="prediction-result" hidden>
+                <strong>₹1,869.35</strong>
+                <small>estimated next-day · 78%</small>
+            </div>
+        </div>
+        <div class="gtt-control">
+            <label class="stock-switch-wrap table-toggle" title="Toggle GTT">
+                <span>GTT</span>
+                <input type="checkbox" class="switch gtt-switch" {% if tickers.auto_execute %}checked{% endif %} aria-label="GTT alert for {{ tickers.ticker }}">
+            </label>
+            <small class="gtt-summary">Buy below ₹1,820.00 · 10 qty</small>
+        </div>
+        <div class="row-actions">
+            <button class="setup-button" data-setup="{{ tickers.ticker }}">Edit</button>
+            <form method="POST" action="{{ url_for('delete_stock', ticker=tickers.ticker) }}" style="display:inline;">
+                <button class="remove-button" type="submit" aria-label="Remove {{ tickers.ticker }}">Remove</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <!-- This renders ONLY if tickers_list has 0 items -->
+    <div class="empty-state">No stocks added. Click "Add a company" to get started.</div>
+    {% endfor %}
+</div>
+                </article>
+
+                <div class="note-card">
+                    <span>✳</span>
+                    <p><strong>GTT setup:</strong> Use Predict to see the model’s estimated price, then set or adjust your trigger and limit prices manually. Predictions are estimates, not guarantees.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<div class="toast" id="toast" role="status">
+    <span>✳</span>
+    <div><strong id="toastTitle"></strong><small id="toastText"></small></div>
+    <button id="toastClose" aria-label="Dismiss">×</button>
+</div>
+
+<dialog class="modal" id="addModal">
+    <form id="addForm" method="POST" action="/watchlist">
+        <button type="button" class="modal-close" data-close="addModal">×</button>
+        <span class="modal-icon">＋</span>
+        <p class="eyebrow">GROW YOUR WATCHLIST</p>
+        <h2>Add a company</h2>
+        <p>Enter a symbol and, if you have it, a current price to enable a demo prediction.</p>
+        <label class="field-label">Company or NSE symbol
+            <input name="company_name" id="newSymbol" placeholder="e.g. INFY" required>
+        </label>
+        <div class="modal-actions">
+            <button type="button" class="button button-soft" data-close="addModal">Cancel</button>
+            <button class="button button-primary" type="submit">Add to watchlist</button>
+        </div>
+    </form>
+</dialog>
+
+<dialog class="modal" id="gttModal">
+    <form id="gttForm">
+        <button type="button" class="modal-close" data-close="gttModal">×</button>
+        <span class="modal-icon">↗</span>
+        <p class="eyebrow">PERSONALIZE YOUR ALERT</p>
+        <h2>Set up a GTT order</h2>
+        <p id="gttCompanyCopy"></p>
+        <p class="model-suggestion" id="gttSuggested"></p>
+        <div class="form-grid gtt-fields">
+            <label class="field-label">Order type
+                <select id="gttSide">
+                    <option value="BUY">Buy below</option>
+                    <option value="SELL">Sell above</option>
+                </select>
+            </label>
+            <label class="field-label">Quantity
+                <input id="gttQuantity" type="number" min="1" step="1" value="1" required>
+            </label>
+            <label class="field-label">Trigger price (₹)
+                <input id="gttTrigger" type="number" min="0.05" step="0.05" required>
+            </label>
+            <label class="field-label">Limit price (₹)
+                <input id="gttLimit" type="number" min="0.05" step="0.05" required>
+            </label>
+        </div>
+        <p class="modal-hint">Demo only. No broker order will be submitted.</p>
+        <div class="modal-actions">
+            <button type="button" class="button button-soft" data-close="gttModal">Cancel</button>
+            <button class="button button-primary" type="submit">Save GTT setup</button>
+        </div>
+    </form>
+</dialog>
+</body>
+</html>
