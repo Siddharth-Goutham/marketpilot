@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
           rel="stylesheet">
-    <link rel="stylesheet" href="static\css\styles.css">
-    <script src="static\js\app.js" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 </head>
 <body data-page="pricing">
 <div class="app-shell">
@@ -22,13 +22,18 @@
                 class="nav-link" href="{{url_for('market_stories')}}"><span class="nav-icon">▤</span>Market stories</a><a
                 class="nav-link active" href="{{url_for('pricing')}}"><span class="nav-icon">₹</span>Pricing</a><a
                 class="nav-link" href="{{url_for('broker_connection')}}"><span class="nav-icon">⌘</span>Broker connection</a><a
-                class="nav-link" href="{{url_for('profile')}}"><span class="nav-icon">♙</span>Profile</a></nav>
+                <a class="nav-link active" href="{{ url_for('profile', user_id=session['user_id']) }}">
+    <span class="nav-icon">♙</span>Profile
+</a>
+        </nav>
         <div class="sidebar-bottom">
             <div class="help-card"><span class="help-icon">✦</span>
                 <div><strong>Choose your pace</strong>
                     <p>Start small or keep growing.</p></div>
             </div>
-            <a class="user-chip" href="{{url_for('profile')}}"><span class="avatar">AK</span><span class="user-info"><strong>Arjun Khanna</strong><small>Personal workspace</small></span></a>
+            <a class="user-chip" href="{{ url_for('profile', user_id=session['user_id']) }}">
+                <span class="avatar">{{users.username.split()[0][0]}}{{users.username.split()[1][0]}}</span>
+                <span class="user-info"><strong>{{users.username}}</strong><small>Personal workspace</small></span></a>
         </div>
     </aside>
     <main class="main-area">
@@ -42,6 +47,7 @@
 {% else %}
 <a class="text-button top-login" href="{{ url_for('auth') }}">Sign in</a>
 {% endif %}
+            </div>
         </header>
         <div class="page-content">
             <section class="view active">

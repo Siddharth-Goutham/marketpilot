@@ -1,6 +1,8 @@
 from flask import Flask, render_template, session, request, redirect, url_for, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
+
+
 from model import db, User, Watchlist, NewsCache
 
 app=Flask(__name__)
@@ -73,8 +75,8 @@ def dashboard():
     if 'user_id' not in session:
         return redirect(url_for("auth"))
 
-    user = User.query.filter_by(id=session['user_id']).first()
-    display_name = user.username.split()[0] if user else "Trader"
+    users = User.query.filter_by(id=session['user_id']).first()
+    display_name = users.username.split()[0] if users else "Trader"
 
     now_hour=float(datetime.now().hour)
     if now_hour<12:
@@ -86,14 +88,14 @@ def dashboard():
 
     tickers_list=Watchlist.query.filter_by(user_id=session['user_id']).all()
 
-    return render_template('index.html',user=display_name,parts_of_day=parts_of_day,tickers_list=tickers_list)
+    return render_template('index.html',user=display_name,users=users,parts_of_day=parts_of_day,tickers_list=tickers_list)
 
 
 @app.route("/watchlist",methods=['POST','GET'])
 def watchlist():
     if 'user_id' not in session:
         return redirect(url_for('auth'))
-
+    users = User.query.filter_by(id=session['user_id']).first()
     if request.method == 'POST':
         company=request.form.get('company_name')
         if company:
@@ -104,10 +106,10 @@ def watchlist():
             )
             db.session.add(new_ticker)
             db.session.commit()
-            return redirect(url_for('watchlist'))
+            return redirect(url_for('watchlist'),users=users)
 
     tickers_list=Watchlist.query.filter_by(user_id=session['user_id']).all()
-    return render_template('watchlist.html',tickers_list=tickers_list)
+    return render_template('watchlist.html',tickers_list=tickers_list,users=users)
 
 @app.route('/watchlist/delete/<ticker>',methods=['POST'])
 def delete_stock(ticker):
@@ -121,19 +123,52 @@ def delete_stock(ticker):
 
 @app.route("/market_stories")
 def market_stories():
-    return render_template('market-stories.html')
+    users = User.query.filter_by(id=session['user_id']).first()
+    return render_template('market-stories.html',users=users)
 
 @app.route("/pricing")
 def pricing():
-    return render_template('pricing.html')
+    users = User.query.filter_by(id=session['user_id']).first()
+    return render_template('pricing.html',users=users)
 
 @app.route('/broker_connection')
 def broker_connection():
-    return render_template('broker-connection.html')
+    users = User.query.filter_by(id=session['user_id']).first()
+    return render_template('broker-connection.html',users=users)
 
-@app.route('/profile')
-def profile():
-    return render_template('profile.html')
+
+@app.route('/profile/<int:user_id>', methods=['POST', 'GET'])
+def profile(user_id):
+    # 1. Protection check: Ensure the user is logged in
+    if 'user_id' not in session:
+        return redirect(url_for('auth'))
+
+    # 2. Security check: Prevent logged-in user A from modifying user B's profile via the URL
+    if session['user_id'] != user_id:
+        return "Unauthorized action", 403
+
+    # 3. Fetch single record (renamed variable to 'user' for clarity)
+    user = User.query.get_or_404(user_id)
+
+    if request.method == "POST":
+        # 4. Grab form inputs
+        new_email = request.form.get('email')
+        new_username = request.form.get('username')
+
+        # 5. Basic Validation: Ensure fields aren't completely blank or null
+        if not new_email or not new_username:
+            return "Email and Username cannot be empty!", 400
+
+        # 6. Apply updates and commit
+        user.email = new_email
+        user.username = new_username
+        db.session.commit()
+
+        # 7. Post-Update Action: Typically best to redirect back or flash a message
+        return redirect(url_for('profile', user_id=user_id))
+
+    # For GET requests, render the page
+    return render_template('profile.html', users=user)
 
 
 if __name__=="__main__":

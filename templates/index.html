@@ -7,8 +7,8 @@
     <title>MarketPilot — Overview</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="static\css\styles.css">
-    <script src="static\js\app.js" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 </head>
 <body data-page="overview">
 <div class="app-shell">
@@ -25,7 +25,9 @@
             <a class="nav-link" href="{{ url_for('market_stories') }}"><span class="nav-icon">▤</span>Market stories</a>
             <a class="nav-link" href="{{ url_for('pricing') }}"><span class="nav-icon">₹</span>Pricing</a>
             <a class="nav-link" href="{{ url_for('broker_connection') }}"><span class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a>
-            <a class="nav-link" href="{{ url_for('profile') }}"><span class="nav-icon">♙</span>Profile</a>
+            <a class="nav-link active" href="{{ url_for('profile', user_id=session['user_id']) }}">
+    <span class="nav-icon">♙</span>Profile
+</a>
         </nav>
         <div class="sidebar-bottom">
             <div class="help-card"><span class="help-icon">✦</span>
@@ -33,9 +35,9 @@
                     <p>Your daily brief is ready when you are.</p><a href="{{ url_for('market_stories') }}">Read today’s stories <span>↗</span></a>
                 </div>
             </div>
-            <a class="user-chip" href="{{ url_for('profile') }}">
-                <span class="avatar">AK</span>
-                <span class="user-info"><strong>Arjun Khanna</strong><small>Personal workspace</small></span>
+            <a class="user-chip" href="{{ url_for('profile', user_id=session['user_id']) }}">
+                <span class="avatar">{{users.username.split()[0][0]}}{{users.username.split()[1][0]}}</span>
+                <span class="user-info"><strong>{{users.username}}</strong><small>Personal workspace</small></span>
                 <span class="more">···</span>
             </a>
         </div>
