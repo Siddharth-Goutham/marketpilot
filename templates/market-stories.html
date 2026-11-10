@@ -7,74 +7,147 @@
     <title>MarketPilot — Market Stories</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-<script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+    <style>
+        .company-article time {
+            display: block;
+            max-width: 100%;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.45;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .company-article {
+            position: relative;
+            cursor: pointer;
+        }
+        .company-news-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .summarize-button {
+            margin-left: auto;
+            flex: 0 0 auto;
+            padding: 9px 14px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--surface-2, transparent);
+            color: var(--text);
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .company-article > strong > a::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+        }
+        .company-article:focus-within {
+            outline: 2px solid var(--accent);
+            outline-offset: -2px;
+        }
+        @media (max-width: 720px) {
+            .company-article time {
+                font-size: 10px;
+                text-align: left;
+                white-space: normal;
+            }
+        }
+    </style>
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 </head>
 <body data-page="news">
 <div class="app-shell">
-    <aside class="sidebar" id="sidebar"><a class="brand" href="index.html"><span
-            class="brand-mark">m<span>↗</span></span><span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span></a>
+    <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#"><span class="brand-mark">m<span>↗</span></span><span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span></a>
         <div class="workspace-label">YOUR WORKSPACE</div>
-        <nav class="nav-list"><a class="nav-link" href="{{url_for('dashboard')}}"><span class="nav-icon">◫</span>Overview</a><a
-                class="nav-link" href="{{url_for('watchlist')}}"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">00</span></a><a
-                class="nav-link active" href="{{url_for('market_stories')}}"><span class="nav-icon">▤</span>Market stories</a><a
-                class="nav-link" href="{{url_for('pricing')}}"><span class="nav-icon">₹</span>Pricing</a><a class="nav-link"
-                                                                                                  href="{{url_for('broker_connection')}}"><span
-                class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a><a class="nav-link active" href="{{ url_for('profile', user_id=session['user_id']) }}">
-    <span class="nav-icon">♙</span>Profile
-</a>
+        <nav class="nav-list">
+            <a class="nav-link" href="{{url_for('dashboard')}}"><span class="nav-icon">◫</span>Overview</a>
+            <a class="nav-link" href="{{url_for('watchlist')}}"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">{{ '%02d' % tickers|length }}</span></a>
+            <a class="nav-link active" href="{{url_for('market_stories')}}"><span class="nav-icon">▤</span>Market stories</a>
+            <a class="nav-link" href="{{url_for('pricing')}}"><span class="nav-icon">₹</span>Pricing</a>
+            <a class="nav-link" href="{{url_for('broker_connection')}}"><span class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a>
+            <a class="nav-link" href="{{ url_for('profile', user_id=session['user_id']) }}"><span class="nav-icon">♙</span>Profile</a>
         </nav>
         <div class="sidebar-bottom">
             <div class="help-card"><span class="help-icon">✦</span>
                 <div><strong>One company at a time</strong>
-                    <p>Stories are grouped by the stock you follow.</p><a href="watchlist.html">Manage watchlist ↗</a>
+                    <p>Stories are grouped by the stock you follow.</p><a href="{{url_for('watchlist')}}">Manage watchlist ↗</a>
                 </div>
             </div>
             <a class="user-chip" href="{{ url_for('profile', user_id=session['user_id']) }}">
-                <span class="avatar">{{users.username.split()[0][0]}}{{users.username.split()[1][0]}}</span>
-                <span class="user-info"><strong>{{users.username}}</strong><small>Personal workspace</small></span><span
-                    class="more">···</span></a></div>
+                <span class="avatar">{{users.username.split()[0][0]}}{% if users.username.split()|length > 1 %}{{users.username.split()[1][0]}}{% endif %}</span>
+                <span class="user-info"><strong>{{users.username}}</strong><small>Personal workspace</small></span><span class="more">···</span>
+            </a>
+        </div>
     </aside>
     <main class="main-area">
         <header class="topbar">
             <button class="mobile-menu icon-button" id="menuToggle" aria-label="Open navigation">☰</button>
             <div class="breadcrumb"><span>Workspace</span><b>/</b><strong>Market stories</strong></div>
             <div class="top-actions"><span class="market-status"><i></i><span>Market open</span></span>
-                <button class="icon-button theme-button" id="themeToggle" aria-label="Switch color theme"><span
-                        id="themeGlyph">☾</span></button>
+                <button class="icon-button theme-button" id="themeToggle" aria-label="Switch color theme"><span id="themeGlyph">☾</span></button>
                 {% if 'user_id' in session %}
                 <a class="text-button top-login" href="{{ url_for('logout') }}">Sign out</a>
                 {% else %}
                 <a class="text-button top-login" href="{{ url_for('auth') }}">Sign in</a>
                 {% endif %}
             </div>
-
         </header>
 
         <div class="page-content">
             <section class="view active">
-                <div class="page-intro"><p class="eyebrow">ONE COMPANY AT A TIME</p>
+                <div class="page-intro">
+                    <p class="eyebrow">ONE COMPANY AT A TIME</p>
                     <h1>Market stories</h1>
-                    <p class="subheading">News and sentiment, kept separate for every company you follow.</p></div>
-                <div class="individual-news-list" id="individualNews"></div>
-                <p class="disclaimer">Demo articles and summaries are illustrative. Summaries are scoped to the company
-                    you select.</p></section>
+                    <p class="subheading">News and sentiment, kept separate for every company you follow.</p>
+                </div>
+
+                <div class="individual-news-list" id="individualNewsStatic">
+
+                    {% for stock in tickers %}
+                    <article class="panel company-news-card" id="{{ stock.ticker }}">
+                        <div class="company-news-head">
+                            <span class="stock-monogram">{{ stock.ticker[:2] }}</span>
+                            <div><strong>{{ stock.ticker }}</strong></div>
+                            <button type="button" class="summarize-button">✦ Summarize</button>
+                        </div>
+                        <div class="company-articles">
+                            {% set count = namespace(value=0) %}
+                            {% for news in news_list if news.ticker == stock.ticker %}
+                                {% set count.value = count.value + 1 %}
+                                <article class="company-article">
+                                    <span class="article-tone {{ news.sentiment_label|lower if news.sentiment_label else 'neutral' }}">{{ stock.ticker }}</span>
+                                    <strong>
+                                        <a href="{{ news.link }}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none">
+                                            {{ news.title }}
+                                        </a>
+                                    </strong>
+                                    {% if news.scraped_at %}
+                                    <time datetime="{{ news.scraped_at }}">{{ news.scraped_at }}</time>
+                                    {% endif %}
+                                </article>
+                            {% endfor %}
+
+                            {# Fallback message if a watchlisted company has no entries inside news_list #}
+                            {% if count.value == 0 %}
+                                <p style="padding: 16px; color: var(--muted); font-size: 13px;">No news stories cached for this ticker yet.</p>
+                            {% endif %}
+                        </div>
+                    </article>
+                    {% else %}
+                    <div class="panel" style="padding: 24px; text-align: center;">
+                        <p>Your watchlist is empty. Add companies to see their market stories here!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
         </div>
     </main>
 </div>
-<div class="toast" id="toast" role="status"><span>✳</span>
-    <div><strong id="toastTitle"></strong><small id="toastText"></small></div>
-    <button id="toastClose" aria-label="Dismiss">×</button>
-</div>
-<dialog class="modal summary-modal" id="summaryModal">
-    <button type="button" class="modal-close" data-close="summaryModal">×</button>
-    <span class="modal-icon">✦</span>
-    <p class="eyebrow">STOCK STORY SUMMARY</p>
-    <h2 id="summaryTitle">Today’s summary</h2>
-    <p class="summary-disclosure">Demo summary of this company’s news.</p>
-    <div class="summary-content" id="summaryContent"></div>
-    <p class="modal-hint">Summary is limited to this stock. Predictions are estimates, not guarantees.</p></dialog>
 </body>
 </html>

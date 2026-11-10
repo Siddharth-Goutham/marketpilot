@@ -3,11 +3,9 @@ import smtplib
 from dotenv import load_dotenv
 from email.message import EmailMessage
 from app import app
-from model import User,NewsCache,db,Watchlist
-from pathlib import Path
+from model import User,NewsCache,Watchlist
 
-env_path = Path(__file__).resolve().parent.parent / '.env'
-load_dotenv(dotenv_path=env_path)
+load_dotenv()
 email_list=[]
 ticker_list=[]
 SENDER_EMAIL = os.getenv("SENDER_EMAIL")

@@ -25,8 +25,7 @@
             <a class="nav-link" href="{{ url_for('market_stories') }}"><span class="nav-icon">▤</span>Market stories</a>
             <a class="nav-link" href="{{ url_for('pricing') }}"><span class="nav-icon">₹</span>Pricing</a>
             <a class="nav-link" href="{{ url_for('broker_connection') }}"><span class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a>
-            <a class="nav-link active" href="{{ url_for('profile', user_id=session['user_id']) }}">
-    <span class="nav-icon">♙</span>Profile
+            <a class="nav-link" href="{{ url_for('profile', user_id=session['user_id']) }}"><span class="nav-icon">♙</span>Profile
 </a>
         </nav>
         <div class="sidebar-bottom">
@@ -79,7 +78,7 @@
                         <h2>Your portfolio at a glance</h2>
                         <p>Track the companies you choose to follow.</p>
                     </div>
-                    <a class="text-button" href="{{ url_for('watchlist') }}">Manage watchlist <span>→</span></a>
+
                 </div>
 
                 <div class="metric-grid">
@@ -111,7 +110,17 @@
                             </div>
                             <a class="text-button" href="{{ url_for('watchlist') }}">View watchlist <span>→</span></a>
                         </div>
-                        <div class="stock-list" id="overviewStocks"></div>
+                        <div class="stock-list" id="overviewStocks">
+                            {% for ticker in tickers_list %}
+                            <div class="stock-row">
+                                <div class="stock-name"><span class="stock-monogram">{{ ticker.ticker[:2]}}</span><span><strong>{{ticker.ticker}}</strong><small>{{ticker.ticker}}</small></span></div>
+                                <div class="stock-quote"><strong>₹1,847.20</strong><small class="positive">+1.84%</small></div>
+                                <div class="prediction-cell"><span class="prediction-pill upside">Positive</span><small>78% model confidence</small></div>
+                                <div class="gtt-control"><span class="status-pill">{{'GTT on' if ticker.auto_execute else 'GTT off' }}</span></div>
+                            </div>
+                            {%endfor%}
+
+                        </div>
                     </article>
                     <div class="right-stack">
                         <article class="insight-card">

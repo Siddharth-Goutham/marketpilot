@@ -18,7 +18,7 @@
             class="brand-mark">m<span>↗</span></span><span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span></a>
         <div class="workspace-label">YOUR WORKSPACE</div>
         <nav class="nav-list"><a class="nav-link" href="{{url_for('dashboard')}}"><span class="nav-icon">◫</span>Overview</a><a
-                class="nav-link" href="{{url_for('watchlist')}}"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">00</span></a><a
+                class="nav-link" href="{{url_for('watchlist')}}"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">{{ '%02d' % tickers|length }}</span></a><a
                 class="nav-link" href="{{url_for('market_stories')}}"><span class="nav-icon">▤</span>Market stories</a><a
                 class="nav-link" href="{{url_for('pricing')}}"><span class="nav-icon">₹</span>Pricing</a><a class="nav-link"
                                                                                                   href="{{url_for('broker_connection')}}"><span

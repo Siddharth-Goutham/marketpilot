@@ -28,8 +28,7 @@
             <a class="nav-link" href="{{ url_for('market_stories') }}"><span class="nav-icon">▤</span>Market stories</a>
             <a class="nav-link" href="{{ url_for('pricing') }}"><span class="nav-icon">₹</span>Pricing</a>
             <a class="nav-link" href="{{ url_for('broker_connection') }}"><span class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a>
-            <a class="nav-link active" href="{{ url_for('profile', user_id=session['user_id']) }}">
-    <span class="nav-icon">♙</span>Profile
+           <a class="nav-link" href="{{ url_for('profile', user_id=session['user_id']) }}"><span class="nav-icon">♙</span>Profile
 </a>
         </nav>
         <div class="sidebar-bottom">
