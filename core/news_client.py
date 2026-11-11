@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 load_dotenv()
 from model import Watchlist,NewsCache,db
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from sqlalchemy import select
 import os
 from datetime import datetime
@@ -16,6 +17,10 @@ ticker_list=[]
 ticker_dict={}
 URL="https://gnews.io/api/v4/search"
 API_KEY=os.getenv("GNEWS_API_KEY")
+
+
+analyzer = SentimentIntensityAnalyzer()
+
 
 def get_unique_ticker_from_watchlist():
     tickers = db.session.scalars(select(Watchlist.ticker).distinct()).all()
@@ -41,6 +46,7 @@ def get_news(tickerr):
         response.raise_for_status()
         ticker_dict[tickerr] = []
 
+
         for article in response.json().get("articles", []):
             raw_date = article.get("publishedAt", "")
 
@@ -56,12 +62,16 @@ def get_news(tickerr):
                 pub_date = datetime.now().date()
                 pub_time = datetime.now().time()
 
+            score = analyzer.polarity_scores(article["title"])['compound']
+
             ticker_dict[tickerr].append({
                 'title': article["title"],
                 'published_date': pub_date,
                 'published_time': pub_time,
-                'url': article["url"]
+                'url': article["url"],
+                'sentiment_score': score
             })
+
 
 def update_database(target_ticker,articles_list):
     NewsCache.query.filter_by(ticker=target_ticker).delete()
@@ -72,8 +82,9 @@ def update_database(target_ticker,articles_list):
                 ticker=target_ticker,
                 title=news['title'],
                 link=news['url'],
-                published_date=news['published_date'], # date object
-                published_time=news['published_time']  # time object
+                published_date=news['published_date'],
+                published_time=news['published_time'] ,
+                sentiment_score=news['sentiment_score']
             )
             db.session.add(new_cache_entry)
 
