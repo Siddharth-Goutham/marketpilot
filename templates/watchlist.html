@@ -42,7 +42,7 @@
             </div>
             <a class="user-chip" href="{{ url_for('profile', user_id=session['user_id']) }}">
 
-                <span class="avatar">{{users.username.split()[0][0]}}{{users.username.split()[1][0]}}</span>
+                <span class="avatar">{{users.username.split()[0][0]}}{% if users.username.split()|length > 1 %}{{users.username.split()[1][0]}}{% endif %}</span>
                 <span class="user-info"><strong>{{ users.username }}</strong><small>Personal workspace</small></span>
                 <span class="more">···</span>
             </a>

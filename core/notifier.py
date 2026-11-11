@@ -37,7 +37,7 @@ with app.app_context():
                     for article in news_articles:
                         email_body += (
                             f"News: {article.title}\n"
-                            f"Time: {article.scraped_at}\n"
+                            f"Date: {article.publised_date}, {article.published_time}\n"
                             f"Link: {article.link}\n\n"
                         )
                     email_body+=("\n")

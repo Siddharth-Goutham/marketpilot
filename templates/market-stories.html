@@ -63,25 +63,28 @@
 <body data-page="news">
 <div class="app-shell">
     <aside class="sidebar" id="sidebar">
-        <a class="brand" href="#"><span class="brand-mark">m<span>↗</span></span><span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span></a>
+        <a class="brand" href="{{ url_for('dashboard') }}">
+            <span class="brand-mark">m<span>↗</span></span>
+            <span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span>
+        </a>
         <div class="workspace-label">YOUR WORKSPACE</div>
         <nav class="nav-list">
-            <a class="nav-link" href="{{url_for('dashboard')}}"><span class="nav-icon">◫</span>Overview</a>
-            <a class="nav-link" href="{{url_for('watchlist')}}"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">{{ '%02d' % tickers|length }}</span></a>
-            <a class="nav-link active" href="{{url_for('market_stories')}}"><span class="nav-icon">▤</span>Market stories</a>
-            <a class="nav-link" href="{{url_for('pricing')}}"><span class="nav-icon">₹</span>Pricing</a>
-            <a class="nav-link" href="{{url_for('broker_connection')}}"><span class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a>
+            <a class="nav-link" href="{{ url_for('dashboard') }}"><span class="nav-icon">◫</span>Overview</a>
+            <a class="nav-link" href="{{ url_for('watchlist') }}"><span class="nav-icon">⌁</span>Watchlist<span class="nav-count">{{ '%02d' % tickers|length }}</span></a>
+            <a class="nav-link active" href="{{ url_for('market_stories') }}"><span class="nav-icon">▤</span>Market stories</a>
+            <a class="nav-link" href="{{ url_for('pricing') }}"><span class="nav-icon">₹</span>Pricing</a>
+            <a class="nav-link" href="{{ url_for('broker_connection') }}"><span class="nav-icon">⌘</span>Broker connection<span class="online-dot"></span></a>
             <a class="nav-link" href="{{ url_for('profile', user_id=session['user_id']) }}"><span class="nav-icon">♙</span>Profile</a>
         </nav>
         <div class="sidebar-bottom">
             <div class="help-card"><span class="help-icon">✦</span>
                 <div><strong>One company at a time</strong>
-                    <p>Stories are grouped by the stock you follow.</p><a href="{{url_for('watchlist')}}">Manage watchlist ↗</a>
+                    <p>Stories are grouped by the stock you follow.</p><a href="{{ url_for('watchlist') }}">Manage watchlist ↗</a>
                 </div>
             </div>
             <a class="user-chip" href="{{ url_for('profile', user_id=session['user_id']) }}">
-                <span class="avatar">{{users.username.split()[0][0]}}{% if users.username.split()|length > 1 %}{{users.username.split()[1][0]}}{% endif %}</span>
-                <span class="user-info"><strong>{{users.username}}</strong><small>Personal workspace</small></span><span class="more">···</span>
+                <span class="avatar">{{ users.username.split()[0][0] }}{% if users.username.split()|length > 1 %}{{ users.username.split()[1][0] }}{% endif %}</span>
+                <span class="user-info"><strong>{{ users.username }}</strong><small>Personal workspace</small></span><span class="more">···</span>
             </a>
         </div>
     </aside>
@@ -127,8 +130,15 @@
                                             {{ news.title }}
                                         </a>
                                     </strong>
-                                    {% if news.scraped_at %}
-                                    <time datetime="{{ news.scraped_at }}">{{ news.scraped_at }}</time>
+
+                                    {# Safe Date & Time formatting supporting both datetime objects and raw strings #}
+                                    {% if news.published_date %}
+                                    <time>
+                                        {{ news.published_date.strftime('%d %b %Y') if news.published_date.strftime is defined else news.published_date }}
+                                        {% if news.published_time %}
+                                            · {{ news.published_time.strftime('%I:%M %p') if news.published_time.strftime is defined else news.published_time }}
+                                        {% endif %}
+                                    </time>
                                     {% endif %}
                                 </article>
                             {% endfor %}

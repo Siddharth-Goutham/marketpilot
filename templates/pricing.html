@@ -14,7 +14,7 @@
 </head>
 <body data-page="pricing">
 <div class="app-shell">
-    <aside class="sidebar" id="sidebar"><a class="brand" href="index.html"><span
+    <aside class="sidebar" id="sidebar"><a class="brand" href="{{ url_for('dashboard') }}"><span
             class="brand-mark">m<span>↗</span></span><span class="brand-copy"><strong>marketpilot</strong><small>MARKETS, IN PERSPECTIVE</small></span></a>
         <div class="workspace-label">YOUR WORKSPACE</div>
         <nav class="nav-list"><a class="nav-link" href="{{url_for('dashboard')}}"><span class="nav-icon">◫</span>Overview</a><a
@@ -31,7 +31,7 @@
                     <p>Start small or keep growing.</p></div>
             </div>
             <a class="user-chip" href="{{ url_for('profile', user_id=session['user_id']) }}">
-                <span class="avatar">{{users.username.split()[0][0]}}{{users.username.split()[1][0]}}</span>
+                <span class="avatar">{{users.username.split()[0][0]}}{% if users.username.split()|length > 1 %}{{users.username.split()[1][0]}}{% endif %}</span>
                 <span class="user-info"><strong>{{users.username}}</strong><small>Personal workspace</small></span></a>
         </div>
     </aside>

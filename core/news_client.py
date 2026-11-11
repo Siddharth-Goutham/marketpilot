@@ -2,13 +2,15 @@ import requests
 import sys
 from app import app
 from pathlib import Path
+from dotenv import load_dotenv
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+load_dotenv()
 from model import Watchlist,NewsCache,db
 from sqlalchemy import select
 import os
-from dotenv import load_dotenv
+from datetime import datetime
 
-load_dotenv()
-sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 ticker_list=[]
 ticker_dict={}
@@ -39,10 +41,25 @@ def get_news(tickerr):
         response.raise_for_status()
         ticker_dict[tickerr] = []
 
-        for article in response.json()["articles"]:
+        for article in response.json().get("articles", []):
+            raw_date = article.get("publishedAt", "")
+
+            if raw_date:
+                try:
+                    dt = datetime.fromisoformat(raw_date.replace("Z", "+00:00"))
+                    pub_date = dt.date()  # Python date object -> maps to db.Date
+                    pub_time = dt.time()  # Python time object -> maps to db.Time
+                except Exception:
+                    pub_date = datetime.now().date()
+                    pub_time = datetime.now().time()
+            else:
+                pub_date = datetime.now().date()
+                pub_time = datetime.now().time()
+
             ticker_dict[tickerr].append({
                 'title': article["title"],
-                'published_date': article["publishedAt"],
+                'published_date': pub_date,
+                'published_time': pub_time,
                 'url': article["url"]
             })
 
@@ -52,11 +69,12 @@ def update_database(target_ticker,articles_list):
     try:
         for news in articles_list:
             new_cache_entry = NewsCache(
-            ticker=target_ticker,
-            title=news['title'],
-            link=news['url'],
-            scraped_at=news['published_date']
-        )
+                ticker=target_ticker,
+                title=news['title'],
+                link=news['url'],
+                published_date=news['published_date'], # date object
+                published_time=news['published_time']  # time object
+            )
             db.session.add(new_cache_entry)
 
         db.session.commit()

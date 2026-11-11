@@ -59,7 +59,7 @@ def auth():
             db.session.commit()
 
             session["user_id"] = new_user.id
-            return redirect(url_for("dashboard",session=session['user_id']))
+            return redirect(url_for("dashboard"))
 
     return render_template("auth.html")
 
@@ -136,12 +136,16 @@ def market_stories():
 
 @app.route("/pricing")
 def pricing():
+    if 'user_id' not in session:
+        return redirect(url_for('auth'))
     users = User.query.filter_by(id=session['user_id']).first()
     tickers=Watchlist.query.filter_by(user_id=session['user_id']).all()
     return render_template('pricing.html',users=users,tickers=tickers)
 
 @app.route('/broker_connection')
 def broker_connection():
+    if 'user_id' not in session:
+        return redirect(url_for('auth'))
     users = User.query.filter_by(id=session['user_id']).first()
     tickers=Watchlist.query.filter_by(user_id=session['user_id']).all()
     return render_template('broker-connection.html',users=users,tickers=tickers)
@@ -149,7 +153,6 @@ def broker_connection():
 
 @app.route('/profile/<int:user_id>', methods=['POST', 'GET'])
 def profile(user_id):
-    # 1. Protection check: Ensure the user is logged in
     if 'user_id' not in session:
         return redirect(url_for('auth'))
 

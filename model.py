@@ -38,7 +38,7 @@ class User(db.Model):
     )
 
     token_date = db.Column(
-        db.String(10),
+        db.Date,
         nullable=True
     )
 
@@ -134,7 +134,12 @@ class NewsCache(db.Model):
                 nullable=True
             )
 
-            scraped_at = db.Column(
-                db.String(20),
+            published_date = db.Column(
+                db.Date,
+                nullable=False
+            )
+
+            published_time=db.Column(
+                db.Time,
                 nullable=False
             )
